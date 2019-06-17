@@ -10,7 +10,8 @@ import base from "../base";
 class App extends React.Component {
   state = {
     fishes: {},
-    order: {}
+    order: {},
+    demo: false
   };
 
   static propTypes = {
@@ -42,6 +43,11 @@ class App extends React.Component {
     base.removeBinding(this.ref);
   }
 
+  setDemo = () => {
+    base.removeBinding(this.ref);
+    this.setState({ fishes: sampleFishes, demo: true });
+  }
+
   addFish = fish => {
     // 1. Take a copy of the existing state
     const fishes = { ...this.state.fishes };
@@ -64,7 +70,11 @@ class App extends React.Component {
     // 1. take a copy of state
     const fishes = { ...this.state.fishes };
     // 2. update the state
-    fishes[key] = null;
+    if(this.state.demo) {
+      delete fishes[key];
+    } else {
+      fishes[key] = null;
+    }
     // 3.  update state
     this.setState({ fishes });
   };
@@ -119,6 +129,8 @@ class App extends React.Component {
           loadSampleFishes={this.loadSampleFishes}
           fishes={this.state.fishes}
           storeId={this.props.match.params.storeId}
+          setDemo={this.setDemo}
+          isDemo={this.state.demo}
         />
       </div>
     );

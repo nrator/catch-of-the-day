@@ -12,12 +12,14 @@ class Inventory extends React.Component {
     updateFish: PropTypes.func,
     deleteFish: PropTypes.func,
     loadSampleFishes: PropTypes.func,
+    setDemo: PropTypes.func,
+    isDemo: PropTypes.bool, 
     addFish: PropTypes.func
   };
 
   state = {
     uid: null,
-    owner: null
+    owner: null,
   };
 
   componentDidMount() {
@@ -31,7 +33,6 @@ class Inventory extends React.Component {
   authHandler = async authData => {
     // 1 .Look up the current store in the firebase database
     const store = await base.fetch(this.props.storeId, { context: this });
-    console.log(store);
     // 2. Claim it if there is no owner
     if (!store.owner) {
       // save it as our own
@@ -64,12 +65,12 @@ class Inventory extends React.Component {
     const logout = <button onClick={this.logout}>Log Out!</button>;
 
     // 1. Check if they are logged in
-    if (!this.state.uid) {
-      return <Login authenticate={this.authenticate} />;
+    if (!this.state.uid && !this.props.isDemo) {
+      return <Login authenticate={this.authenticate} setDemo={this.props.setDemo}/>;
     }
 
     // 2. check if they are not the owner of the store
-    if (this.state.uid !== this.state.owner) {
+    if (this.state.uid && this.state.uid !== this.state.owner) {
       return (
         <div>
           <p>Sorry you are not the owner!</p>

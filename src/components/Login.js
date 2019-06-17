@@ -11,6 +11,9 @@ const Login = props => (
     <button className="facebook" onClick={() => props.authenticate("Facebook")}>
       Log In With Facebook
     </button>
+    <button className="demo" onClick={() => props.setDemo()}>
+      Demo
+    </button>    
   </nav>
 );
 
